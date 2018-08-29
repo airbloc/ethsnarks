@@ -42,7 +42,7 @@ bool test_sha256_full_gadget()
     SHA256_Init(&ctx);
     SHA256_Update(&ctx, input_buffer, sizeof(input_buffer));    
     SHA256_Final(output_digest, &ctx);
-    uint8_t output_expected[] = {
+    const uint8_t output_expected[] = {
         0xD2, 0x94, 0xF6, 0xE5, 0x85, 0x87, 0x4F, 0xE6,
         0x40, 0xBE, 0x4C, 0xE6, 0x36, 0xE6, 0xEF, 0x9E,
         0x3A, 0xDC, 0x27, 0x62, 0x0A, 0xA3, 0x22, 0x1F,
@@ -79,11 +79,11 @@ bool test_sha256_full_gadget()
 
     // Binds circuit satisfiability to whether or not the full output
     // matches what was computed by OpenSSL's SHA256
-    auto output_digest_bits = bytes_to_bv(output_digest, SHA256_digest_size_bytes);
+    const auto output_digest_bits = bytes_to_bv(output_digest, SHA256_digest_size_bytes);
 	full_output.generate_r1cs_witness(output_digest_bits);
 
     // Verify the result matches what we computed
-    auto full_output_bits = full_output.get_digest();
+    const auto full_output_bits = full_output.get_digest();
     uint8_t full_output_bytes[SHA256_digest_size_bytes];
     bv_to_bytes(full_output_bits, full_output_bytes);
     if( memcmp(full_output_bytes, output_digest, SHA256_digest_size_bytes) != 0 ) {

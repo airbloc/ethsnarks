@@ -57,10 +57,10 @@ libff::bit_vector bytes_to_bv(const uint8_t *in_bytes, const size_t in_count)
 }
 
 
-std::vector<unsigned long> bit_list_to_ints(std::vector<bool> bit_list, const size_t wordsize)
+std::vector<unsigned long> bit_list_to_ints(const libff::bit_vector &bit_list, const size_t wordsize)
 {
     std::vector<unsigned long> res;
-    size_t iterations = bit_list.size()/wordsize+1;
+    const size_t iterations = bit_list.size()/wordsize+1;
 
     for (size_t i = 0; i < iterations; ++i)
     {
@@ -129,18 +129,6 @@ void bv_to_bytes(const libff::bit_vector &in_bits, uint8_t *out_bytes)
     for( auto& b : bit_list_to_ints(in_bits, 8) ) {
         *out_bytes++ = (uint8_t)b;
     }
-}
-
-
-template<typename FieldT>
-pb_variable_array<FieldT> block_from_left_right (
-    const digest_variable<FieldT> &left,
-    const digest_variable<FieldT> &right
-) {
-    pb_variable_array<FieldT> block;
-    block.insert(block.end(), left.bits.begin(), left.bits.end());
-    block.insert(block.end(), right.bits.begin(), right.bits.end());    
-    return block;
 }
 
 
